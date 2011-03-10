@@ -4,10 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Hello World, PowerControl"
-    />
+  <Button
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:text="Start"
+      android:onClick="startImportant" />
+  <Button
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:text="Stop"
+      android:onClick="stopImportant" />
 </LinearLayout>
-
