@@ -1,11 +1,50 @@
 package com.paulbutcher.powercontrol
 
-import android.test.ActivityInstrumentationTestCase2
+import android.content.{Context, ContextWrapper, Intent}
+import android.os.PowerManager
+import android.test.ActivityUnitTestCase
+import android.test.mock.MockContext
+import android.util.Log
 
-class PowerControlTest extends 
-  ActivityInstrumentationTestCase2[PowerControl]("com.paulbutcher.powercontrol", classOf[PowerControl]) {
+import com.borachio.junit3.MockFactory
+
+class PowerControlTest
+  extends ActivityUnitTestCase[PowerControl](classOf[PowerControl]) 
+  with MockFactory {
     
-  def testStartImportant() {
-      getActivity().startImportant(null)
+  val startIntent = new Intent(Intent.ACTION_MAIN)
+    
+  override def setUp() {
+    super.setUp
+    resetExpectations
+  }
+  
+  override def tearDown() {
+    verifyExpectations
+    super.tearDown
+  }
+  
+  def testAttempt1 {
+    val mockContext = new MockContext;
+    setActivityContext(mockContext)
+    startActivity(startIntent, null, null)
+  }
+    
+  def testAttempt2 {
+    val testContext = new ContextWrapper(getInstrumentation.getTargetContext);
+    setActivityContext(testContext)
+    startActivity(startIntent, null, null)
+  }
+  
+  def testAttempt3 {
+    val mockPowerManager = mock[PowerManager]
+    val testContext = new ContextWrapper(getInstrumentation.getTargetContext) {
+      override def getSystemService(name: String) = name match {
+        case "power" => mockPowerManager
+        case _ => super.getSystemService(name)
+      }
+    }
+    setActivityContext(testContext)
+    startActivity(startIntent, null, null)
   }
 }
